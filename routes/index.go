@@ -3,6 +3,7 @@ package routes
 import (
 	"crud-fiber/config"
 	"crud-fiber/controllers"
+	"crud-fiber/middleware"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -13,7 +14,7 @@ func InitRoutes(r *fiber.App) {
 
 	r.Get("/users", controllers.GetUserAll)
 	r.Post("/user", controllers.CreateUser)
-	r.Get("/user/:id", controllers.UserGetById)
+	r.Get("/user/:id", middleware.Auth, controllers.UserGetById)
 	r.Put("/user/:id", controllers.UserUpdate)
 	r.Put("/user/:id/update-email", controllers.UserUpdateEmail)
 	r.Delete("/user/:id", controllers.UserDelete)
