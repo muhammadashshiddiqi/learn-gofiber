@@ -5,6 +5,7 @@ import (
 	"crud-fiber/models/entity"
 	"crud-fiber/models/repository"
 	"crud-fiber/models/request"
+	"crud-fiber/utils"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -45,11 +46,20 @@ func CreateUser(ctx *fiber.Ctx) error {
 		})
 	}
 
-	newUser := repository.User{
-		Name:    user.Name,
-		Email:   user.Email,
-		Address: user.Address,
-		Phone:   user.Phone,
+	hashedPassword, err := utils.HashPassword(user.Password)
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"code":    500,
+			"message": err,
+		})
+	}
+
+	newUser := entity.User{
+		Name:     user.Name,
+		Email:    user.Email,
+		Address:  user.Address,
+		Phone:    user.Phone,
+		Password: hashedPassword,
 	}
 
 	result := database.DB.Create(&newUser)

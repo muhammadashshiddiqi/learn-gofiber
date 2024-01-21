@@ -8,7 +8,7 @@ func Auth(ctx *fiber.Ctx) error {
 	if token != "secret" {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"code":    401,
-			"message": "erro unauthorized",
+			"message": "error unauthorized",
 		})
 	}
 	return ctx.Next()
