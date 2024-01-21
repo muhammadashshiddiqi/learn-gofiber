@@ -2,5 +2,10 @@
 
 This short description progress :
 
-### 19 Januari 2024
+### 20 Januari 2024
 CRUD with gorm + postgres
+
+### 21 Januari 2024
+- Middleware
+- Auth
+- Password Hash
