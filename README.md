@@ -9,3 +9,6 @@ CRUD with gorm + postgres
 - Middleware
 - Auth
 - Password Hash
+
+### 27 Januari 2024
+- JWT Token

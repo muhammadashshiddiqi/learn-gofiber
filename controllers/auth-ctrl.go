@@ -6,9 +6,11 @@ import (
 	"crud-fiber/models/request"
 	"crud-fiber/utils"
 	"log"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 func Login(ctx *fiber.Ctx) error {
@@ -48,8 +50,30 @@ func Login(ctx *fiber.Ctx) error {
 		})
 	}
 
+	//GENERATE JWT
+	claims := jwt.MapClaims{}
+	claims["name"] = user.Name
+	claims["email"] = user.Email
+	claims["address"] = user.Address
+	claims["exp"] = time.Now().Add(time.Minute * 24).Unix()
+
+	if user.Email == "sidiq@test.dev" {
+		claims["role"] = "admin"
+	}else{
+		claims["role"] = "user"
+	}
+
+	token, errToken := utils.GenerateToken(&claims)
+	if errToken != nil {
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"code":    401,
+			"message": "wrong credential",
+		})
+	}
+
 	return ctx.Status(200).JSON(fiber.Map{
 		"code":    200,
 		"message": "waiting progress",
+		"token": token, 
 	})
 }

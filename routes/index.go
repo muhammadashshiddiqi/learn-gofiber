@@ -12,9 +12,8 @@ func InitRoutes(r *fiber.App) {
 	r.Static("/images", config.RootPath+"/public/assets/images")
 	r.Static("/files", config.RootPath+"/public/assets/files")
 
-	
 	r.Post("/login", controllers.Login)
-	r.Get("/users", controllers.GetUserAll)
+	r.Get("/users", middleware.Auth, controllers.GetUserAll)
 	r.Post("/user", controllers.CreateUser)
 	r.Get("/user/:id", middleware.Auth, controllers.UserGetById)
 	r.Put("/user/:id", controllers.UserUpdate)
